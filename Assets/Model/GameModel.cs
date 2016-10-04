@@ -101,21 +101,32 @@ public static class GameModel {
 
     public static void makeScenes()
 	{
-		Scene tmp; 
+		Scene tmp;
+        DataService theService = new DataService();
 
-		Start_scene = new Scene();
+
+        if(theService.DbExists("GameNameDb"))
+        {
+            theService.Connect();
+            theService.LoadScenes();
+            currentPlayer.InitalizePlayerState();
+            currentPlayer.CurrentScene = Scene.AllScenes[0];
+        }
+
+        Start_scene = new Scene();
+        
 
 		Start_scene.Scenename = "TextIO";
 		tmp = new Scene();
-		
-		
+
+        Start_scene.Id = 1;
 		Start_scene.North = tmp;
         Start_scene.West = tmp;
         Start_scene.South = tmp;
         Start_scene.East = tmp;
         Start_scene.Description = "You are at the front of the class with your teacher" ;
 
-
+        tmp.Id = 2;
         tmp.Description = "You walk back to your desk";
         //tmp.Excuse = new Scene(); // working on this excuse path
         tmp.South = new Scene();
@@ -123,73 +134,100 @@ public static class GameModel {
         tmp.West = new Scene();
         tmp.North = new Scene();
 
+        tmp.North.Id = 3;
         tmp.North.Description = "You fell on your desk";
         tmp.North.South = tmp;		
 		tmp.North.North = new Scene();
         tmp.North.West = new Scene();
         tmp.North.East = new Scene();
 
+
+        tmp.North.North.Id = 4;
         tmp.North.North.Description = "You can't go this way";
         tmp.North.North.South = tmp.North;
 
+
+        tmp.North.West.Id = 5;
         tmp.North.West.Description = "You can't go this way";
         tmp.North.West.East = tmp.North;
 
+
+        tmp.North.East.Id = 6;
         tmp.North.East.Description = "You can't go this way";
         tmp.North.East.West = tmp.North;
 
+
+        tmp.West.Id = 7;
         tmp.West.Description = "You fell out the window";
         tmp.West.North = new Scene();
         tmp.West.South = new Scene();
         tmp.West.East = tmp;
         tmp.West.West = new Scene();
 
+        tmp.West.North.Id = 8;
         tmp.West.North.Description = "You can't go this way";
         tmp.West.North.South = tmp.West;
 
+        tmp.West.South.Id = 9;
         tmp.West.South.Description = "You can't go this way";
         tmp.West.South.North = tmp.West;
 
+        tmp.West.West.Id = 10;
         tmp.West.West.Description = "You can't go this way";
         tmp.West.West.East = tmp.West;
 
+        tmp.East.Id = 11;
         tmp.East.Description = "You walk into your teacher";
         tmp.East.West = tmp;
         tmp.East.South = new Scene();
         tmp.East.North = new Scene();
         tmp.East.East = new Scene();
 
+
+        tmp.East.South.Id = 12;
         tmp.East.South.Description = "You can't go this way";
         tmp.East.South.North = tmp.East;
 
+
+        tmp.East.North.Id = 13;
         tmp.East.North.Description = "You can't go this way";
         tmp.East.North.South = tmp.East;
 
+
+        tmp.East.East.Id = 14;
         tmp.East.East.Description = "You can't go this way";
         tmp.East.East.West = tmp.East;
 
+        tmp.South.Id = 15;
         tmp.South.Description = "You sit on your chair";
         tmp.South.East = new Scene();
         tmp.South.North = tmp;
         tmp.South.West = new Scene();
         tmp.South.South = new Scene();
 
+        tmp.South.East.Id = 16;
         tmp.South.East.Description = "You can't go this way";
         tmp.South.East.West = tmp.South;
 
+        tmp.South.West.Id = 17;
         tmp.South.West.Description = "You can't go this way";
         tmp.South.West.East = tmp.South;
 
+        tmp.South.South.Id = 18;
         tmp.South.South.Description = "You can't go this way";
         tmp.South.South.North = tmp.South;
 
-        
+
         // working on an excuse path.
         //tmp.Excuse.Description = "DO excuse";
         //tmp.South = new Scene();
         //tmp.North = new Scene();
 
+        currentPlayer.InitalizePlayerState();
         currentPlayer.CurrentScene = Start_scene;
+
+        theService.Connect();
+        theService.SaveScenes();
 
 	}
 }
